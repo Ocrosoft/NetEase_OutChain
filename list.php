@@ -2,9 +2,9 @@
 
 #歌单ID
 $playlist_list = array(
-    "415190686",
+    "XXXXXX",
 );
 #单曲ID
 $player_list = array(
-
+    "XXXXXX",
 );
