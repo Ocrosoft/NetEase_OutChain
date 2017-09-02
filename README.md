@@ -24,6 +24,7 @@ GET 取得歌曲的名称、艺术家、歌词、翻译、封面等，<br/>
 测试：(2017/09/02 可用)<br/>
 http://music.ocrosoft.com<br/>
 
-致谢：
+致谢：<br/>
 https://github.com/darknessomi/musicbox（命令行版网易云音乐，新版API参考于此）<br/>
 https://github.com/Mooooooon/Musicoon（网易云音乐私人FM，旧版API和测试页面HTML和CSS等参考于此）
+PS:旧版API已经无法获取到mp3URL，但仍能获取到歌词等信息。
