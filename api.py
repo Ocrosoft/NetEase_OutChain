@@ -1,13 +1,29 @@
 import os
+import re
 import json
 import hashlib
 import base64
 import binascii
+import logging  
+import logging.handlers  
 
 from Crypto.Cipher import AES
 import requests
 
 default_timeout = 10
+
+#log
+LOG_FILE = 'tst.log'  
+handler = logging.handlers.RotatingFileHandler(LOG_FILE, maxBytes = 1024*1024, backupCount = 5) 
+fmt = '%(asctime)s - %(filename)s:%(lineno)s - %(name)s - %(message)s'  
+formatter = logging.Formatter(fmt) 
+handler.setFormatter(formatter) 
+logger = logging.getLogger('tst')
+logger.addHandler(handler)
+logger.setLevel(logging.DEBUG)  
+
+import sys
+ids = sys.argv[1]
 
 def encrypted_request(text):
     text = json.dumps(text)
@@ -43,8 +59,8 @@ modulus = ('00e0b509f6259df8642dbc35662901477df22677ec152b5ff68ace615bb7'
 nonce = '0CoJUm6Qyw8W8jud'
 pubKey = '010001'
 
-def geturl_new_api(song):
-    alter = NetEase().songs_detail_new_api([song['id']])[0]
+def geturl_new_api(netEase, song):
+    alter = netEase.songs_detail_new_api([song['id']])[0]
     url = alter['url']
     return url
 
@@ -62,8 +78,9 @@ class NetEase(object):
             'User-Agent':
             'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.152 Safari/537.36'  # NOQA
         }
-        self.cookies = {'appver': '1.5.2'}
+        self.cookies = {'appver': '1.5.2','os': 'linux'}
         self.session = requests.Session()
+        self.proxies = { "http": "127.0.0.1:1080", "https": "127.0.0.1:1080" }
 
     def httpRequest(self,
                     method,
@@ -88,17 +105,19 @@ class NetEase(object):
             url = action if query is None else action + '?' + query
             connection = self.session.get(url,
                                           headers=self.header,
-                                          timeout=default_timeout)
+                                          timeout=default_timeout,
+                                          proxies=self.proxies)
 
         elif method == 'POST':
             connection = self.session.post(action,
                                            data=query,
                                            headers=self.header,
-                                           timeout=default_timeout)
+                                           timeout=default_timeout,
+                                           proxies=self.proxies)
 
         connection.encoding = 'UTF-8'
         return connection.text
-
+	
     def songs_detail(self, ids, offset=0):
         tmpids = ids[offset:]
         tmpids = tmpids[0:100]
@@ -117,13 +136,17 @@ class NetEase(object):
 
     def songs_detail_new_api(self, music_ids, bit_rate=320000):
         action = 'http://music.163.com/weapi/song/enhance/player/url?csrf_token='
-        csrf = ''
-        data = {'ids': music_ids, 'br': bit_rate, 'csrf_token': csrf}
+		
+        data = {'ids': music_ids, 'br': bit_rate, 'csrf_token': ''}
         connection = self.session.post(action,
                                        data=encrypted_request(data),
-                                       headers=self.header, )
+                                       cookies=self.cookies,
+                                       headers=self.header,
+                                       proxies=self.proxies)
         result = json.loads(connection.text)
         return result['data']
 
-import sys
-print(geturl_new_api(NetEase().songs_detail([sys.argv[1]])[0]))
+netEase = NetEase()
+ids = ids.split(',');
+logger.info('url:' + ids[0])
+print(geturl_new_api(netEase, netEase.songs_detail(ids)[0]))
