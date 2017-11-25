@@ -22,14 +22,14 @@ GET 取得歌曲的名称、艺术家、歌词、翻译、封面等，<br/>
 2.在网页中使用 javascript 通过 ajax 请求 player.php，<br/>
 解析返回的 json 数据，并根据需要显示。<br/>
 
-测试：(2017/09/02 可用)<br/>
-http://music.ocrosoft.com<br/>
-
 # NetEase_OutChain(Javascript)<br/>
 网易云外链（Javascript）<br/>
 
 Js版无法作为服务调用，依赖于脚本管理器（GM，TM等）。<br/>
 源码在 https://greasyfork.org/zh-CN/scripts/33046 查看。<br/>
+
+#
+测试：(2017/11/25 可用)<br/>
 
 致谢：<br/>
 https://github.com/darknessomi/musicbox（命令行版网易云音乐，新版API参考于此）<br/>
