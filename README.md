@@ -1,8 +1,9 @@
-# NetEase_OutChain
-网易云外链
+# NetEase_OutChain(Python + php)<br/>
+网易云外链（Python + php）
 
 api.py:<br/>
 传入参数为歌曲ID，返回值为该歌曲的MP3地址。<br/>
+可以进行些许修改，使其支持多曲目解析。<br/>
 需要安装 python3<br/>
 并 pip 安装 request, pycrypto<br/>
 
@@ -23,6 +24,12 @@ GET 取得歌曲的名称、艺术家、歌词、翻译、封面等，<br/>
 
 测试：(2017/09/02 可用)<br/>
 http://music.ocrosoft.com<br/>
+
+# NetEase_OutChain(Javascript)<br/>
+网易云外链（Javascript）<br/>
+
+Js版无法作为服务调用，依赖于脚本管理器（GM，TM等）。<br/
+源码在 https://greasyfork.org/zh-CN/scripts/33046 查看。<br/>
 
 致谢：<br/>
 https://github.com/darknessomi/musicbox（命令行版网易云音乐，新版API参考于此）<br/>
