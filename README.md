@@ -28,7 +28,7 @@ http://music.ocrosoft.com<br/>
 # NetEase_OutChain(Javascript)<br/>
 网易云外链（Javascript）<br/>
 
-Js版无法作为服务调用，依赖于脚本管理器（GM，TM等）。<br/
+Js版无法作为服务调用，依赖于脚本管理器（GM，TM等）。<br/>
 源码在 https://greasyfork.org/zh-CN/scripts/33046 查看。<br/>
 
 致谢：<br/>
