@@ -30,6 +30,6 @@ Js版无法作为服务调用，依赖于脚本管理器（GM，TM等）。<br/>
 测试：2018/3/7，有效
 
 # 致谢：
-https://github.com/darknessomi/musicbox（命令行版网易云音乐，新版API参考于此）<br/>
-https://github.com/Mooooooon/Musicoon（网易云音乐私人FM，旧版API和测试页面HTML和CSS等参考于此）<br/>
+https://github.com/darknessomi/musicbox （命令行版网易云音乐，新版API参考于此）<br/>
+https://github.com/Mooooooon/Musicoon （网易云音乐私人FM，旧版API和测试页面HTML和CSS等参考于此）<br/>
 PS:旧版API已经无法获取到mp3URL，但仍能获取到歌词等信息。
