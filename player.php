@@ -1,6 +1,7 @@
 <?php
 include 'list.php';
 
+ini_set("display_errors", "On"); 
 function curl_get($url)
 {
     $refer = "http://music.163.com/";
@@ -90,7 +91,7 @@ $lrc_info = json_decode(get_music_lyric($id), true);
 
 //处理音乐信息
 $play_info["cover"] = $music_info["songs"][0]["album"]["picUrl"];
-$play_info["mp3"] = shell_exec('C:/Users/Administrator/AppData/Local/Programs/Python/Python36-32/python.exe C:/wordpress/outchain/api.py '.$id);
+$play_info["mp3"] = shell_exec('python api.py '.$id);
 $play_info["music_name"] = $music_info["songs"][0]["name"];
 foreach ($music_info["songs"][0]["artists"] as $key) {
     if (!isset($play_info["artists"])) {
