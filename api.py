@@ -6,24 +6,12 @@ import base64
 import binascii
 import logging  
 import logging.handlers  
+import sys
 
 from Crypto.Cipher import AES
 import requests
 
 default_timeout = 10
-
-#log
-LOG_FILE = 'tst.log'  
-handler = logging.handlers.RotatingFileHandler(LOG_FILE, maxBytes = 1024*1024, backupCount = 5) 
-fmt = '%(asctime)s - %(filename)s:%(lineno)s - %(name)s - %(message)s'  
-formatter = logging.Formatter(fmt) 
-handler.setFormatter(formatter) 
-logger = logging.getLogger('tst')
-logger.addHandler(handler)
-logger.setLevel(logging.DEBUG)  
-
-import sys
-ids = sys.argv[1]
 
 def encrypted_request(text):
     text = json.dumps(text)
@@ -59,11 +47,6 @@ modulus = ('00e0b509f6259df8642dbc35662901477df22677ec152b5ff68ace615bb7'
 nonce = '0CoJUm6Qyw8W8jud'
 pubKey = '010001'
 
-def geturl_new_api(netEase, song):
-    alter = netEase.songs_detail_new_api([song['id']])[0]
-    url = alter['url']
-    return url
-
 class NetEase(object):
 
     def __init__(self):
@@ -80,73 +63,17 @@ class NetEase(object):
         }
         self.cookies = {'appver': '1.5.2','os': 'linux'}
         self.session = requests.Session()
-        self.proxies = { "http": "127.0.0.1:1080", "https": "127.0.0.1:1080" }
-
-    def httpRequest(self,
-                    method,
-                    action,
-                    query=None,
-                    urlencoded=None,
-                    callback=None,
-                    timeout=None):
-        connection = json.loads(
-            self.rawHttpRequest(method, action, query, urlencoded, callback, timeout)
-        )
-        return connection
-
-    def rawHttpRequest(self,
-                       method,
-                       action,
-                       query=None,
-                       urlencoded=None,
-                       callback=None,
-                       timeout=None):
-        if method == 'GET':
-            url = action if query is None else action + '?' + query
-            connection = self.session.get(url,
-                                          headers=self.header,
-                                          timeout=default_timeout,
-                                          proxies=self.proxies)
-
-        elif method == 'POST':
-            connection = self.session.post(action,
-                                           data=query,
-                                           headers=self.header,
-                                           timeout=default_timeout,
-                                           proxies=self.proxies)
-
-        connection.encoding = 'UTF-8'
-        return connection.text
-	
-    def songs_detail(self, ids, offset=0):
-        tmpids = ids[offset:]
-        tmpids = tmpids[0:100]
-        tmpids = list(map(str, tmpids))
-        action = 'http://music.163.com/api/song/detail?ids=[{}]'.format(
-            ','.join(tmpids))
-        try:
-            data = self.httpRequest('GET', action)
-
-            data['songs'].sort(key=lambda song: tmpids.index(str(song['id'])))
-
-            return data['songs']
-        except requests.exceptions.RequestException as e:
-            log.error(e)
-            return []
 
     def songs_detail_new_api(self, music_ids, bit_rate=320000):
         action = 'http://music.163.com/weapi/song/enhance/player/url?csrf_token='
-		
         data = {'ids': music_ids, 'br': bit_rate, 'csrf_token': ''}
         connection = self.session.post(action,
                                        data=encrypted_request(data),
                                        cookies=self.cookies,
-                                       headers=self.header,
-                                       proxies=self.proxies)
-        result = json.loads(connection.text)
-        return result['data']
+                                       headers=self.header)
+        return connection.text
 
-netEase = NetEase()
-ids = ids.split(',');
-logger.info('url:' + ids[0])
-print(geturl_new_api(netEase, netEase.songs_detail(ids)[0]))
+details = NetEase().songs_detail_new_api(sys.argv[1].split(','))
+#print(details)
+details = json.loads(details)
+print(details['data'][0]['url'])
