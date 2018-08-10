@@ -5,7 +5,7 @@ api.py:<br/>
 传入参数为歌曲ID，返回值为该歌曲的MP3地址。<br/>
 可以进行些许修改，使其支持多曲目解析。<br/>
 需要安装 python3<br/>
-并 pip 安装 request, pycrypto<br/>
+并 pip3 安装 requests, pycrypto<br/>
 
 list.php:<br/>
 播放列表，支持歌单和单曲<br/>
@@ -17,17 +17,20 @@ GET 取得歌曲的名称、艺术家、歌词、翻译、封面等，<br/>
 调用 api.py 取得歌曲 mp3URL，<br/>
 最终返回 json<br/>
 
-如何使用：
+如何使用：<br/>
 1.python3 环境和 php 环境<br/>
 2.在网页中使用 javascript 通过 ajax 请求 player.php，<br/>
 解析返回的 json 数据，并根据需要显示。<br/>
+
+错误：<br/>
+如果直接命令行调用api.py正常，但是player.php获取到的是null，检查一下shell_exec<br/>
 
 # NetEase_OutChain(Javascript)<br/>
 网易云外链（Javascript）<br/>
 
 Js版无法作为服务调用，依赖于脚本管理器（GM，TM等）。<br/>
 源码在 https://greasyfork.org/zh-CN/scripts/33046 查看。<br/>
-测试：2018/3/7，有效
+测试：2018/8/10，有效
 
 # 致谢：
 https://github.com/darknessomi/musicbox （命令行版网易云音乐，新版API参考于此）<br/>
